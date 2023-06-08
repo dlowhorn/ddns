@@ -26,12 +26,12 @@ dlowhorn.ddns - Push the current IP address to the specified DNS record
 <!-- SOURCE -->
 <FILE Name="/boot/config/plugins/ddns/ddns_puship">
 <URL>https://raw.githubusercontent.com/dlowhorn/ddns/main/ddns_puship</URL>
-<MD5></MD5>
+<MD5>e0d1e04a4c367f0174913cd77676a8ae</MD5>
 </FILE>
 
 <FILE Name="/boot/config/plugins/ddns/ddns_cron">
 <URL>https://raw.githubusercontent.com/dlowhorn/ddns/main/unraid-plugin/cron</URL>
-<MD5></MD5>
+<MD5>32851228fbeefc31e975b069263c1bdb</MD5>
 </FILE>
 
 <FILE Run="/bin/bash">
