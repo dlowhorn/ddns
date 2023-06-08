@@ -51,6 +51,7 @@ dlowhorn.ddns - Push the current IP address to the specified DNS record
   mkdir -p "${D}/bin"
   cp /boot/config/plugins/ddns/ddns_puship "${D}/bin"
   cp /boot/config/plugins/ddns/ddns_cron ${D}
+  chmod 755 "${D}/bin/ddns_puship"
 
   ln -sfn "${D}/bin/ddns_puship" /usr/local/sbin/ddns_puship
   ln -sfn "${D}/ddns_cron" /etc/cron.hourly/ddns
