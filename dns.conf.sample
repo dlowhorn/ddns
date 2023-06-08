@@ -1,0 +1,9 @@
+# ddns currently has only a cloudflare integration (no idea if other will even be possible)
+PROVIDER="<Cloudflare>"
+ACCOUNT_ID="<Cloudflare account email address>"
+ZONE_IDENTIFIER="<DNS Zone, available on your Cloudflare DNS Overview page, right column >"
+API_KEY="<Generate your global API token key at https://dash.cloudflare.com/profile/api-tokens>"
+DOMAIN_NAME="<The domain you wish to update to this machine's IP address>"
+PROXIED=<true|false>
+DNS_RECORD_TYPE="<The type (e.g., A) of the DNS record you wish to update>"
+TTL=<TTL for DNS record, e.g., 3600, 1 for automatic>

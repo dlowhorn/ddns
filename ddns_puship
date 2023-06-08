@@ -1,0 +1,184 @@
+#!/usr/bin/env bash
+#
+#
+# dlowhorn/ddns Push the current IP address to the specified DNS record
+# Copyright (C) 2023, Daniel Lowhorn<daniel@fromthecove.com>
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program.  If not, see <https://www.gnu.org/licenses/>.
+#
+#
+# NAME
+#       ddns_puship - Push the current IP address to the specified DNS record
+#
+# SYNOPSIS
+#       ddns_puship [OPTIONS] [PATH TO CONFIG FILE]
+#
+# DESCRIPTION
+#       Push the current IP address to the specified DNS record
+#       
+#       With no FILE, assume config is in PWD/dns.conf
+#
+#       -v show verbose debugging output
+# 
+# SETUP
+#
+#   Copy dns.conf.sample to dns.conf and fill in with desired account/domain info
+#
+
+VERBOSE=0
+while getopts "v" opt
+do
+    case $opt in
+    (v) VERBOSE=1
+    shift
+    esac
+done
+
+if [ -n "$1" ]; then
+    CONF=$1
+else
+    CONF=$PWD/dns.conf
+fi
+
+
+if [ $VERBOSE -eq 1 ]; then
+
+cat << EOF
+
+ddns_puship  Copyright (C) 2023  Daniel Lowhorn <daniel@fromthecove.com>
+This program comes with ABSOLUTELY NO WARRANTY
+This is free software, and you are welcome to redistribute it
+under certain conditions
+
+EOF
+
+fi
+
+
+PWD=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
+IP=$(curl -s ifconfig.me)
+
+# Load config and verify expected variables exist and are set
+if [ ! -f $CONF ]; then
+    echo "Required config missing at $CONF";
+    exit 1;
+fi
+
+source $CONF;
+
+# Each provider must exist in this array and be matched exactly by the value in $CONF
+PROVIDERS=(Cloudflare)
+VALID_PROVIDER=$(echo ${PROVIDERS[@]} | grep -ow "${PROVIDER}" | wc -w)
+
+if [ $VALID_PROVIDER -eq 0 ]; then
+    echo "Provider '${PROVIDER}' is not supported"
+    exit 2;
+fi
+
+# Each provider will have its own function
+
+Cloudflare() {
+
+    EXPECTED=(PROVIDER ACCOUNT_ID ZONE_IDENTIFIER API_KEY DOMAIN_NAME PROXIED DNS_RECORD_TYPE);
+    for V in ${EXPECTED[@]}; do
+        if [[ ! -v $V || -z ${!V} ]]; then
+            echo "Missing required parameter ${V}";
+            exit 2;
+        elif [ $VERBOSE -eq 1 ]; then
+            echo "${V}=${!V}"
+        fi
+    done
+
+
+    API="https://api.cloudflare.com/client/v4/zones"
+
+    # Retrieve record
+    record=`curl --silent -G \
+    --url ${API}/${ZONE_IDENTIFIER}/dns_records \
+    --header 'Content-Type: application/json' \
+    --header "X-Auth-Email: ${ACCOUNT_ID}" \
+    --header "X-Auth-Key: ${API_KEY}" \
+    -d "match=all&name=${DOMAIN_NAME}&type=${DNS_RECORD_TYPE}"`
+
+    if [ $VERBOSE -eq 1 ]; then
+        echo
+        echo
+        echo "Response:"
+        echo
+        echo $record | jq
+    fi
+
+    if [ $? -ne 0 ]; then
+        echo "Curl command failed"
+        exit 3;
+    fi
+
+    # Confirm record matches config
+    RECORD_COUNT=`echo $record | jq '.result|length'`
+
+    if [ $RECORD_COUNT -ne 1 ]; then
+        echo "Unexpected returned record count: $RECORD_COUNT";
+        exit 4;
+    fi
+
+    RECORD_ID=`echo $record | jq -r .result[0].id`
+    RECORD_NAME=`echo $record | jq -r .result[0].name`
+    RECORD_TYPE=`echo $record | jq -r .result[0].type`
+
+    if [ "${RECORD_NAME}" != "${DOMAIN_NAME}" ]; then
+        echo "Unexpected mismatch: ${RECORD_NAME} != ${DOMAIN_NAME}";
+        exit 5;
+    fi
+
+    if [ $VERBOSE -eq 1 ]; then
+        echo
+        echo "RECORD_ID = ${RECORD_ID}"
+        echo "RECORD_NAME = ${RECORD_NAME}"
+        echo "RECORD_TYPE = ${RECORD_TYPE}"
+        echo
+    fi
+
+    # Update record with current IP address
+    NOW=`date "+%d/%m/%y.%H:%M:%S"`
+    updated=`curl --silent --request PUT \
+    --url ${API}/${ZONE_IDENTIFIER}/dns_records/${RECORD_ID} \
+    --header 'Content-Type: application/json' \
+    --header 'Content-Type: application/json' \
+    --header "X-Auth-Email: ${ACCOUNT_ID}" \
+    --header "X-Auth-Key: ${API_KEY}" \
+    --data '{
+    "content": "'${IP}'",
+    "name": "'${DOMAIN_NAME}'",
+    "proxied": '${PROXIED}',
+    "type": "'${DNS_RECORD_TYPE}'",
+    "comment": "['${NOW}'] Updated by ddns_puship"
+    }'`
+
+    if [ $VERBOSE -eq 1 ]; then
+        echo
+        echo
+        echo "Response:"
+        echo
+        echo $updated | jq
+    fi
+
+    if [ $? -ne 0 ]; then
+        echo "Update failed"
+        echo $updated;
+        exit 6;
+    fi
+
+}
+
+$PROVIDER

@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+
+
+if [ -f "/usr/local/emhttp/plugins/ddns/cloudflare.conf" ]; then
+
+else
+    /usr/local/emhttp/plugins/ddns/verify-config.php | logger -t ddns
+fi

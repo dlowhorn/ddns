@@ -1,0 +1,82 @@
+<?xml version='1.0' standalone='yes'?>
+
+<!DOCTYPE PLUGIN [
+<!ENTITY name      "dlowhorn.ddns">
+<!ENTITY author    "Daniel Lowhorn">
+<!ENTITY version   "2023.06.07.1">
+<!ENTITY launch    "Settings/DDNS">
+<!ENTITY pluginURL "https://raw.githubusercontent.com/dlowhorn/ddns/main/plugin/ddns.plg">
+]>
+
+<PLUGIN name="&name;" author="&author;" version="&version;" launch="&launch;" pluginURL="&pluginURL;" min="6.9.0">
+
+<CHANGES>
+##&name;
+
+###&version;
+- initial release for unRAID v6
+</CHANGES>
+
+<!--
+Copyright 2023, Daniel Lowhorn
+dlowhorn.ddns - Push the current IP address to the specified DNS record
+-->
+
+
+<!-- SOURCE -->
+<FILE Name="/boot/config/plugins/ddns/ddns_puship">
+<URL>https://raw.githubusercontent.com/dlowhorn/ddns/main/ddns_puship</URL>
+<MD5></MD5>
+</FILE>
+
+<FILE Name="/boot/config/plugins/ddns/ddns_cron">
+<URL>https://raw.githubusercontent.com/dlowhorn/ddns/main/plugin/cron</URL>
+<MD5></MD5>
+</FILE>
+
+<FILE Run="/bin/bash">
+<INLINE>
+<![CDATA[
+
+  F="/usr/sbin/ddns_puship"
+  if [ -f $F ]; then
+    rm -f $F;
+  fi
+
+  D="/usr/local/emhttp/plugins/ddns"
+  if [ -d $D ]; then
+    rm -rf $D;
+  fi
+
+  mkdir -p "${D}/bin"
+  cp /boot/config/plugins/ddns/ddns_puship "${D}/bin"
+  cp /boot/config/plugins/ddns/ddns_cron ${D}
+
+  ln -sfn "${D}/bin/ddns_puship" /usr/sbin/ddns_puship
+  ln -sfn "${D}/ddns_cron" /etc/cron.hourly/ddns
+
+echo ""
+echo "----------------------------------------------------"
+echo " ddns has been installed"
+echo " Version: &version;"
+echo "----------------------------------------------------"
+echo ""
+
+]]>
+</INLINE>
+</FILE>
+
+
+<!-- REMOVE SCRIPT -->
+<FILE Run="/bin/bash" Method="remove">
+<INLINE>
+<![CDATA[
+  rm -f /usr/sbin/ddns_puship
+  rm -f /etc/cron.hourly/ddns
+  rm -rf /usr/local/emhttp/plugins/ddns
+  rm -rf /boot/config/plugins/ddns
+]]>
+</INLINE>
+</FILE>
+
+</PLUGIN>
