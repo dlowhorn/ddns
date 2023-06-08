@@ -38,7 +38,7 @@ dlowhorn.ddns - Push the current IP address to the specified DNS record
 <INLINE>
 <![CDATA[
 
-  F="/usr/sbin/ddns_puship"
+  F="/usr/local/sbin/ddns_puship"
   if [ -f $F ]; then
     rm -f $F;
   fi
@@ -52,13 +52,13 @@ dlowhorn.ddns - Push the current IP address to the specified DNS record
   cp /boot/config/plugins/ddns/ddns_puship "${D}/bin"
   cp /boot/config/plugins/ddns/ddns_cron ${D}
 
-  ln -sfn "${D}/bin/ddns_puship" /usr/sbin/ddns_puship
+  ln -sfn "${D}/bin/ddns_puship" /usr/local/sbin/ddns_puship
   ln -sfn "${D}/ddns_cron" /etc/cron.hourly/ddns
 
 echo ""
 echo "----------------------------------------------------"
 echo " ddns has been installed"
-echo " Version: &version;"
+echo " Version: 2023.06.07.1"
 echo "----------------------------------------------------"
 echo ""
 
@@ -71,7 +71,7 @@ echo ""
 <FILE Run="/bin/bash" Method="remove">
 <INLINE>
 <![CDATA[
-  rm -f /usr/sbin/ddns_puship
+  rm -f /usr/local/sbin/ddns_puship
   rm -f /etc/cron.hourly/ddns
   rm -rf /usr/local/emhttp/plugins/ddns
   rm -rf /boot/config/plugins/ddns
