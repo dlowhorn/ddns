@@ -1,9 +1,10 @@
 <?xml version='1.0' standalone='yes'?>
+<!DOCTYPE PLUGIN>
 
 <PLUGIN 
   name="fromthecove/ddns" 
   author="Daniel Lowhorn <daniel@fromthecove.com>" 
-  version="2023.06.08-190521" 
+  version="2023.06.08-191020" 
   launch="Settings/DDNS" 
   pluginURL="https://raw.githubusercontent.com/fromthecove/ddns/main/unraid-plugin/ddns.plg" 
   min="6.9.0"
@@ -61,7 +62,7 @@ fromthecove/ddns - Push the current IP address to the specified DNS record
 echo ""
 echo "----------------------------------------------------"
 echo " ddns has been installed"
-echo " Version: 2023.06.08-190521"
+echo " Version: 2023.06.08-191020"
 echo "----------------------------------------------------"
 echo ""
 
