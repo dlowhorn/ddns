@@ -3,7 +3,7 @@
 
 <PLUGIN 
   name="fromthecove/ddns" 
-  author="Daniel Lowhorn <daniel@fromthecove.com>" 
+  author="Daniel Lowhorn" 
   version="VERSION" 
   launch="Settings/DDNS" 
   pluginURL="https://raw.githubusercontent.com/fromthecove/ddns/main/ddns.plg" 
