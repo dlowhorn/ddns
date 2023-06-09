@@ -4,9 +4,9 @@
 <PLUGIN 
   name="fromthecove/ddns" 
   author="Daniel Lowhorn <daniel@fromthecove.com>" 
-  version="2023.06.08-191502" 
+  version="2023.06.08-191811" 
   launch="Settings/DDNS" 
-  pluginURL="https://raw.githubusercontent.com/fromthecove/ddns/main/unraid-plugin/ddns.plg" 
+  pluginURL="https://raw.githubusercontent.com/fromthecove/ddns/main/ddns.plg" 
   min="6.9.0"
 >
 
@@ -55,7 +55,7 @@
 echo ""
 echo "----------------------------------------------------"
 echo " ddns has been installed"
-echo " Version: 2023.06.08-191502"
+echo " Version: 2023.06.08-191811"
 echo "----------------------------------------------------"
 echo ""
 
