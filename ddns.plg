@@ -1,17 +1,16 @@
 <?xml version='1.0' standalone='yes'?>
 
-<!DOCTYPE PLUGIN [
-<!ENTITY name      "dlowhorn.ddns">
-<!ENTITY author    "Daniel Lowhorn">
-<!ENTITY version   "2023.06.07.1">
-<!ENTITY launch    "Settings/DDNS">
-<!ENTITY pluginURL "https://raw.githubusercontent.com/dlowhorn/ddns/main/unraid-plugin/ddns.plg">
-]>
-
-<PLUGIN name="&name;" author="&author;" version="&version;" launch="&launch;" pluginURL="&pluginURL;" min="6.9.0">
+<PLUGIN 
+  name="fromthecove/ddns" 
+  author="Daniel Lowhorn <daniel@fromthecove.com>" 
+  version="2023.06.08-190521" 
+  launch="Settings/DDNS" 
+  pluginURL="https://raw.githubusercontent.com/fromthecove/ddns/main/unraid-plugin/ddns.plg" 
+  min="6.9.0"
+>
 
 <CHANGES>
-##&name;
+fromthecove/ddns
 
 ###&version;
 - initial release for unRAID v6
@@ -19,20 +18,20 @@
 
 <!--
 Copyright 2023, Daniel Lowhorn
-dlowhorn.ddns - Push the current IP address to the specified DNS record
+fromthecove/ddns - Push the current IP address to the specified DNS record
 -->
 
-
 <!-- SOURCE -->
-<FILE Name="/boot/config/plugins/ddns/ddns_puship">
-<URL>https://raw.githubusercontent.com/dlowhorn/ddns/main/ddns_puship</URL>
-<MD5>e0d1e04a4c367f0174913cd77676a8ae</MD5>
+<FILE Name="/boot/config/plugins/ddns/ddns-unraid-plungin.plg.tgz">
+<URL>https://raw.githubusercontent.com/fromthecove/ddns/main/ddns-unraid-plungin.plg.tgz</URL>
+<MD5>5d3b1e5c70d53a3a5f3e6165f562335e</MD5>
 </FILE>
 
-<FILE Name="/boot/config/plugins/ddns/ddns_cron">
-<URL>https://raw.githubusercontent.com/dlowhorn/ddns/main/unraid-plugin/cron</URL>
-<MD5>32851228fbeefc31e975b069263c1bdb</MD5>
+<FILE Name="/boot/config/plugins/ddns/ddns_puship">
+<URL>https://raw.githubusercontent.com/fromthecove/ddns/main/ddns_puship</URL>
+<MD5>24c09fe694d2152508e08b8087a5d38b</MD5>
 </FILE>
+
 
 <FILE Run="/bin/bash">
 <INLINE>
@@ -48,9 +47,12 @@ dlowhorn.ddns - Push the current IP address to the specified DNS record
     rm -rf $D;
   fi
 
+  # Install unraid GUI tools
   mkdir -p "${D}/bin"
+  tar xzf /boot/config/plugins/ddns/ddns-unraid-plungin.plg.tgz -C $D
+
+  # Install scripts
   cp /boot/config/plugins/ddns/ddns_puship "${D}/bin"
-  cp /boot/config/plugins/ddns/ddns_cron ${D}
   chmod 755 "${D}/bin/ddns_puship"
 
   ln -sfn "${D}/bin/ddns_puship" /usr/local/sbin/ddns_puship
@@ -59,7 +61,7 @@ dlowhorn.ddns - Push the current IP address to the specified DNS record
 echo ""
 echo "----------------------------------------------------"
 echo " ddns has been installed"
-echo " Version: 2023.06.07.1"
+echo " Version: 2023.06.08-190521"
 echo "----------------------------------------------------"
 echo ""
 

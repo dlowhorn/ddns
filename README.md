@@ -1,4 +1,4 @@
-# dlowhorn/ddns
+# fromthecove/ddns
 
 ## NAME
 ddns_puship - Push the current IP address to the specified DNS record

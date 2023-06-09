@@ -1,0 +1,85 @@
+<?xml version='1.0' standalone='yes'?>
+
+<PLUGIN 
+  name="fromthecove/ddns" 
+  author="Daniel Lowhorn <daniel@fromthecove.com>" 
+  version="VERSION" 
+  launch="Settings/DDNS" 
+  pluginURL="https://raw.githubusercontent.com/fromthecove/ddns/main/unraid-plugin/ddns.plg" 
+  min="6.9.0"
+>
+
+<CHANGES>
+fromthecove/ddns
+
+###&version;
+- initial release for unRAID v6
+</CHANGES>
+
+<!--
+Copyright 2023, Daniel Lowhorn
+fromthecove/ddns - Push the current IP address to the specified DNS record
+-->
+
+<!-- SOURCE -->
+<FILE Name="/boot/config/plugins/ddns/ddns-unraid-plungin.plg.tgz">
+<URL>https://raw.githubusercontent.com/fromthecove/ddns/main/ddns-unraid-plungin.plg.tgz</URL>
+<MD5>ARCHIVE_HASH</MD5>
+</FILE>
+
+<FILE Name="/boot/config/plugins/ddns/ddns_puship">
+<URL>https://raw.githubusercontent.com/fromthecove/ddns/main/ddns_puship</URL>
+<MD5>PUSHIP_HASH</MD5>
+</FILE>
+
+
+<FILE Run="/bin/bash">
+<INLINE>
+<![CDATA[
+
+  F="/usr/local/sbin/ddns_puship"
+  if [ -f $F ]; then
+    rm -f $F;
+  fi
+
+  D="/usr/local/emhttp/plugins/ddns"
+  if [ -d $D ]; then
+    rm -rf $D;
+  fi
+
+  # Install unraid GUI tools
+  mkdir -p "${D}/bin"
+  tar xzf /boot/config/plugins/ddns/ddns-unraid-plungin.plg.tgz -C $D
+
+  # Install scripts
+  cp /boot/config/plugins/ddns/ddns_puship "${D}/bin"
+  chmod 755 "${D}/bin/ddns_puship"
+
+  ln -sfn "${D}/bin/ddns_puship" /usr/local/sbin/ddns_puship
+  ln -sfn "${D}/ddns_cron" /etc/cron.hourly/ddns
+
+echo ""
+echo "----------------------------------------------------"
+echo " ddns has been installed"
+echo " Version: VERSION"
+echo "----------------------------------------------------"
+echo ""
+
+]]>
+</INLINE>
+</FILE>
+
+
+<!-- REMOVE SCRIPT -->
+<FILE Run="/bin/bash" Method="remove">
+<INLINE>
+<![CDATA[
+  rm -f /usr/local/sbin/ddns_puship
+  rm -f /etc/cron.hourly/ddns
+  rm -rf /usr/local/emhttp/plugins/ddns
+  rm -rf /boot/config/plugins/ddns
+]]>
+</INLINE>
+</FILE>
+
+</PLUGIN>

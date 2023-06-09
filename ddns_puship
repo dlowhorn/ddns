@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 #
 #
-# dlowhorn/ddns Push the current IP address to the specified DNS record
+# fromthecove/ddns Push the current IP address to the specified DNS record
 # Copyright (C) 2023, Daniel Lowhorn<daniel@fromthecove.com>
 #
 # This program is free software: you can redistribute it and/or modify
@@ -36,6 +36,9 @@
 #   Copy dns.conf.sample to dns.conf and fill in with desired account/domain info
 #
 
+PWD=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
+IP=$(curl -s ifconfig.me)
+
 VERBOSE=0
 while getopts "v" opt
 do
@@ -64,10 +67,6 @@ under certain conditions
 EOF
 
 fi
-
-
-PWD=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
-IP=$(curl -s ifconfig.me)
 
 # Load config and verify expected variables exist and are set
 if [ ! -f $CONF ]; then
