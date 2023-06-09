@@ -11,18 +11,11 @@
 >
 
 <CHANGES>
-fromthecove/ddns
-
-###&version;
-- initial release for unRAID v6
+<![CDATA[
+]]>
 </CHANGES>
 
-<!--
-Copyright 2023, Daniel Lowhorn
-fromthecove/ddns - Push the current IP address to the specified DNS record
--->
 
-<!-- SOURCE -->
 <FILE Name="/boot/config/plugins/ddns/ddns-unraid-plungin.plg.tgz">
 <URL>https://raw.githubusercontent.com/fromthecove/ddns/main/ddns-unraid-plungin.plg.tgz</URL>
 <MD5>ARCHIVE_HASH</MD5>
