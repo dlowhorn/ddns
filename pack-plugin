@@ -1,17 +1,17 @@
 #!/usr/bin/env bash
 
 PWD=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
+VERSION=`date +%Y.%m.%d`
+tar czf ddns-unraid-plugin.plg.tgz -C "${PWD}/unraid-plugin" .
+
+# Integrate version and release notes into ddns.plg
 rm -f "${PWD}/ddns.plg"
 cp "${PWD}/ddns.plg.template" "${PWD}/ddns.plg"
-
-VERSION=`date +%Y.%m.%d-%H%M%S`
 sed -i "s/VERSION/${VERSION}/g" "${PWD}/ddns.plg"
 
-
+# Add file hashes
 HASH=`md5sum ${PWD}/ddns_puship | awk '{ print $1 }'`
 sed -i "s/PUSHIP_HASH/${HASH}/" "${PWD}/ddns.plg"
 
-
-tar czf ddns-unraid-plugin.plg.tgz -C "${PWD}/unraid-plugin" .
 HASH=`md5sum ${PWD}/ddns-unraid-plugin.plg.tgz | awk '{ print $1 }'`
 sed -i "s/ARCHIVE_HASH/${HASH}/" "${PWD}/ddns.plg"

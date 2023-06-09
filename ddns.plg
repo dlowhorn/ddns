@@ -4,7 +4,7 @@
 <PLUGIN 
   name="fromthecove/ddns" 
   author="Daniel Lowhorn" 
-  version="2023.06.08-192619" 
+  version="2023.06.08" 
   launch="Settings/DDNS" 
   pluginURL="https://raw.githubusercontent.com/fromthecove/ddns/main/ddns.plg" 
   min="6.9.0"
@@ -12,6 +12,12 @@
 
 <CHANGES>
 <![CDATA[
+
+###2023.06.08###
+  - Dev work
+
+Repo: https://github.com/fromthecove/ddns
+
 ]]>
 </CHANGES>
 
@@ -55,7 +61,7 @@
 echo ""
 echo "----------------------------------------------------"
 echo " ddns has been installed"
-echo " Version: 2023.06.08-192619"
+echo " Version: 2023.06.08"
 echo "----------------------------------------------------"
 echo ""
 
