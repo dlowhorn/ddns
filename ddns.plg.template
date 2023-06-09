@@ -16,8 +16,8 @@
 </CHANGES>
 
 
-<FILE Name="/boot/config/plugins/ddns/ddns-unraid-plungin.plg.tgz">
-<URL>https://raw.githubusercontent.com/fromthecove/ddns/main/ddns-unraid-plungin.plg.tgz</URL>
+<FILE Name="/boot/config/plugins/ddns/ddns-unraid-plugin.plg.tgz">
+<URL>https://raw.githubusercontent.com/fromthecove/ddns/main/ddns-unraid-plugin.plg.tgz</URL>
 <MD5>ARCHIVE_HASH</MD5>
 </FILE>
 
@@ -43,7 +43,7 @@
 
   # Install unraid GUI tools
   mkdir -p "${D}/bin"
-  tar xzf /boot/config/plugins/ddns/ddns-unraid-plungin.plg.tgz -C $D
+  tar xzf /boot/config/plugins/ddns/ddns-unraid-plugin.plg.tgz -C $D
 
   # Install scripts
   cp /boot/config/plugins/ddns/ddns_puship "${D}/bin"

@@ -4,7 +4,7 @@
 <PLUGIN 
   name="fromthecove/ddns" 
   author="Daniel Lowhorn <daniel@fromthecove.com>" 
-  version="2023.06.08-191811" 
+  version="2023.06.08-192027" 
   launch="Settings/DDNS" 
   pluginURL="https://raw.githubusercontent.com/fromthecove/ddns/main/ddns.plg" 
   min="6.9.0"
@@ -16,8 +16,8 @@
 </CHANGES>
 
 
-<FILE Name="/boot/config/plugins/ddns/ddns-unraid-plungin.plg.tgz">
-<URL>https://raw.githubusercontent.com/fromthecove/ddns/main/ddns-unraid-plungin.plg.tgz</URL>
+<FILE Name="/boot/config/plugins/ddns/ddns-unraid-plugin.plg.tgz">
+<URL>https://raw.githubusercontent.com/fromthecove/ddns/main/ddns-unraid-plugin.plg.tgz</URL>
 <MD5>5d3b1e5c70d53a3a5f3e6165f562335e</MD5>
 </FILE>
 
@@ -43,7 +43,7 @@
 
   # Install unraid GUI tools
   mkdir -p "${D}/bin"
-  tar xzf /boot/config/plugins/ddns/ddns-unraid-plungin.plg.tgz -C $D
+  tar xzf /boot/config/plugins/ddns/ddns-unraid-plugin.plg.tgz -C $D
 
   # Install scripts
   cp /boot/config/plugins/ddns/ddns_puship "${D}/bin"
@@ -55,7 +55,7 @@
 echo ""
 echo "----------------------------------------------------"
 echo " ddns has been installed"
-echo " Version: 2023.06.08-191811"
+echo " Version: 2023.06.08-192027"
 echo "----------------------------------------------------"
 echo ""
 
